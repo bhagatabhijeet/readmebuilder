@@ -1,0 +1,27 @@
+{
+  "name": "readmebuilder",
+  "version": "1.0.0",
+  "description": "Node.js console application to build readme based on user inputs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhagatabhijeet/readmebuilder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bhagatabhijeet/readmebuilder/issues"
+  },
+  "homepage": "https://github.com/bhagatabhijeet/readmebuilder#readme",
+  "dependencies": {
+    "@octokit/rest": "^18.0.5",
+    "axios": "^0.20.0",
+    "boxen": "^4.2.0",
+    "inquirer": "^7.3.3",
+    "ora": "^5.1.0"
+  }
+}
