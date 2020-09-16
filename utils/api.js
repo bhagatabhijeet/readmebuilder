@@ -250,16 +250,17 @@ async function main() {
 
       await writeFileAsync(readmePath,markdown);
       oraspinner.stop();
+      console.log();
       console.log(
-        boxen(`${chalk.blue('Thank You! for using ReadMeBuilder.')}
-        
+        boxen(`
+        ${chalk.blue('Thank You! for using ReadMeBuilder.')}        
         ReadMe.md is now ready. Please find the file at ${path.resolve(readmePath)}
         `          
         , 
         { 
         padding: 1 ,
         borderColor:'cyan',
-        borderStyle:'round',
+        borderStyle:'single',
         float:'center',  
         
     }));
