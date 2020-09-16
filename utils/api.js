@@ -2,61 +2,80 @@ const { default: Axios } = require("axios");
 const inquirer = require("inquirer");
 const ora = require('ora');
 const chalk = require('chalk');
+const { promise } = require("ora");
 
 let oraspinner = ora();
-oraspinner.color='yellow';
-oraspinner.spinner='dots';
-oraspinner.indent=5;
+oraspinner.color = 'yellow';
+oraspinner.spinner = 'dots';
+oraspinner.indent = 5;
 
+const readme={
+  projectTitle:"",
+  description:"",
+  installation:"",
+  usage:"",
+  license:"",
+  contributing:"",
+  tests:"",
+  displayProfilePic:true,
+  displayEmail:true
+
+};
 const api = {
-  githubuser:{},
+  githubuser: {},
   getUser(userName) {
     return Axios.get(`https://api.github.com/users/${userName}`);
-  },  
-  getRepo(userName,repoName){
-    return Axios.get(`https://api.github.com/users/${userName}/${repoName}`);
-  } 
+  },
+  getRepo(userName, repoName) {
+    return Axios.get(`https://api.github.com/users/${userName}/repos`);
+  }
 
 };
 
-function checkUser() {
-  const getuserPrompt = inquirer.prompt([{
+async function checkUser() {
+  const getuserPrompt = await inquirer.prompt([{
     type: "input",
-    message: "Please enter your github username",
+    message: "Please enter your github username : ",
     name: 'githubuser',
 
   }])
-    .then(
-      async (ans) => {
-        console.log(ans.githubuser);
-        try {
-          oraspinner.start('Getting User details from github');
-          const user = await api.getUser(ans.githubuser);
+  console.log(getuserPrompt.githubuser);
+  try {
+    oraspinner.start('Getting User details from github');
+    const user = await api.getUser(getuserPrompt.githubuser);
+    const validUser = await isValidUser(user);
+    if (validUser) {
+      console.log(chalk.green(`Thank You. The usename:${getuserPrompt.githubuser} you have entered is a valid user`));
+      api.githubuser = user.data;
+    }
+    else {
+      console.log();
+      console.log(chalk.red("User Not Found!"), chalk.blue("let's try again!"));
+      checkUser();
+    }
+  }
+  catch (err) {
+    oraspinner.stop();
+    console.log(err);
+    console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
+    checkUser();
+  }
+}
 
-          //the setTimeout is pseudo. This is just to mock the ora spinner
-          setTimeout(async () => {
-            oraspinner.stop();
-            if (user.login !== 'undefined') {
-              console.log(chalk.green(`Thank You. The usename:${ans.githubuser} you have entered is a valid user`));
-              api.githubuser = user.data;
-              // console.log(api.githubuser);
-              await getEmail(); 
-              console.log(api.githubuser);
-            }
-            else {
-              checkUser();
-            }
-          }, 3000);
+function isValidUser(user) {
 
-        }
-        catch (error) {
-          oraspinner.stop();
-          console.log();
-          console.log(chalk.red("User Not Found!"), chalk.blue("let's try again!"));
-          checkUser();
-        }
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (user.login !== 'undefined') {
+        oraspinner.stop();
+        resolve(true);
       }
-    )
+      else {
+        oraspinner.stop();
+        reject(false);
+      }
+    }, 2000);
+  });
 }
 
 async function getEmail() {
@@ -66,20 +85,95 @@ async function getEmail() {
   let eml = await inquirer.prompt([
     {
       type: 'input',
-      message: 'Please enter the email address to display in ReadMe',
+      message: 'Please enter the email address to display in ReadMe : ',
       default: 'Press Enter to skip.',
       name: 'email'
     }
   ])
   // .then((eml) => {
-    if (eml.email === 'Press Enter to skip.') {
-      eml.email = '';
-    }
-    else {
-
-      api.githubuser.email = eml.email;
-    }
-  // })
+  if (eml.email === 'Press Enter to skip.') {
+    eml.email = '';
+  }
+  else {
+    api.githubuser.email = eml.email;
+  }
 }
 
-module.exports = {api,checkUser,getEmail};
+async function checkRepo() {
+  const getRepo = await inquirer.prompt([{
+    type: "input",
+    message: "Please enter your github repo name : ",
+    name: 'githubrepo',
+
+  }])
+
+  try {
+    oraspinner.start('Getting repo details from github');
+    let repos = await api.getRepo(api.githubuser.login, getRepo.githubrepo);
+   
+
+    const validRepo = await isValidRepo(repos.data, getRepo.githubrepo);
+    if (validRepo) {
+      console.log(chalk.green(`Thank You. The repo:${getRepo.githubrepo} is a valid`));
+    }
+    else {
+      console.log();
+      console.log(chalk.red("Invalid repo!"), chalk.blue("let's try again!"));
+      checkRepo();
+    }
+  }
+  catch (err) {
+    oraspinner.stop();
+    console.log(err);
+    console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
+    checkRepo();
+  }
+
+
+}
+
+function isValidRepo(repos, repoName) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {      
+      const filteredRepo = repos.filter(repo => repo.name.toUpperCase() == repoName.toUpperCase());
+      if (filteredRepo.length === 1) {        
+        oraspinner.stop();
+        api.githubuser.repo = filteredRepo[0];
+        resolve(true);
+      }
+      else {
+        oraspinner.stop();
+        reject(false);
+      }
+    }, 2000);
+  });
+}
+
+async function main() {
+
+  // Check if user wants to continue
+  const readyPrompt = await inquirer
+    .prompt([{
+      type: "confirm",
+      message: "Please make sure you've read the documentation.Ready?",
+      name: 'ready',
+    }]);
+
+  // If !continue then exit
+  if (!readyPrompt.ready) {
+    process.exit(1);
+  }
+
+  // Get github user name from user, and check if it's valid
+  await checkUser();
+
+  // Check if user has public email on his profile. If no public email found then ask user
+  await getEmail();
+
+  // Get and Check if repo is valid
+  await checkRepo();
+
+  console.log(api.githubuser)
+}
+
+module.exports = { api, checkUser, getEmail, checkRepo, main };
