@@ -47,7 +47,7 @@ async function checkUser() {
     name: 'githubuser',
 
   }])
-  console.log(getuserPrompt.githubuser);
+  // console.log(getuserPrompt.githubuser);
   try {
     oraspinner.start('Getting User details from github');
     const user = await api.getUser(getuserPrompt.githubuser);
