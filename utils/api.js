@@ -249,6 +249,7 @@ async function main() {
     try{
 
       await writeFileAsync(readmePath,markdown);
+      oraspinner.stop();
       console.log(
         boxen(`${chalk.blue('Thank You! for using ReadMeBuilder.')}
         
@@ -256,14 +257,13 @@ async function main() {
         `          
         , 
         { 
-        padding: 2 ,
+        padding: 1 ,
         borderColor:'cyan',
         borderStyle:'round',
         float:'center',  
         
     }));
     
-      oraspinner.stop();
     }
     catch{err}{
       oraspinner.stop();
