@@ -8,6 +8,7 @@ const fs = require("fs");
 const util = require('util');
 const writeFileAsync = util.promisify(fs.writeFile);
 const path = require('path');
+const boxen = require('boxen');
 
 let oraspinner = ora();
 oraspinner.color = 'yellow';
@@ -241,11 +242,35 @@ async function main() {
   
   let markdown = markdownGenerator(api.githubuser,readMeContent)
   let readmePath = path.join(".","output","ReadMe.md");
-  await writeFileAsync(readmePath,markdown);
-  // console.log(readMeContent);
-  
 
-  // console.log(api.githubuser)
+
+  oraspinner.start("Generating Reame...")
+  setTimeout(async () => {
+    try{
+
+      await writeFileAsync(readmePath,markdown);
+      console.log(
+        boxen(`${chalk.blue('Thank You! for using ReadMeBuilder.')}
+        
+        ReadMe.md is now ready. Please find the file at ${path.resolve(readmePath)}
+        `          
+        , 
+        { 
+        padding: 2 ,
+        borderColor:'cyan',
+        borderStyle:'round',
+        float:'center',  
+        
+    }));
+    
+      oraspinner.stop();
+    }
+    catch{err}{
+      oraspinner.stop();
+    }
+    
+  }, 2000);
+ 
 }
 
 module.exports = { main,api,readMeContent };
