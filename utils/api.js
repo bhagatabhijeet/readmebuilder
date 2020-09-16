@@ -3,11 +3,18 @@ const inquirer = require("inquirer");
 const ora = require('ora');
 const chalk = require('chalk');
 const { promise } = require("ora");
+const markdownGenerator = require("./generateMarkdown");
+const fs = require("fs");
+const util = require('util');
+const writeFileAsync = util.promisify(fs.writeFile);
+const path = require('path');
 
 let oraspinner = ora();
 oraspinner.color = 'yellow';
 oraspinner.spinner = 'dots';
 oraspinner.indent = 5;
+
+let readMeContent;
 
 // const readme={
 //   projectTitle:"",
@@ -119,14 +126,14 @@ async function checkRepo() {
     else {
       console.log();
       console.log(chalk.red("Invalid repo!"), chalk.blue("let's try again!"));
-      checkRepo();
+      await checkRepo();
     }
   }
   catch (err) {
     oraspinner.stop();
     console.log(err);
     console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
-    checkRepo();
+    await checkRepo();
   }
 
 
@@ -143,7 +150,7 @@ function isValidRepo(repos, repoName) {
       }
       else {
         oraspinner.stop();
-        reject(false);
+        resolve(false);
       }
     }, 2000);
   });
@@ -173,26 +180,27 @@ async function main() {
 
   // Get and Check if repo is valid
   await checkRepo();
+  
 
-  const readMeContent = await inquirer.prompt([    
+  readMeContent = await inquirer.prompt([    
       {
         type: "input",
-        name: "projectTitle",
+        name: "title",
         message: `What is the title of your project : `,
         default:api.githubuser.repo.name
       },
       {
-        type: "editor",
+        type: "input",
         name: "description",
         message: "Provide the description for your ReadMe : ",
       },
       {
-        type: "editor",
+        type: "input",
         name: "installation",
         message: "How to install your application : ",
       },
       {
-        type: "editor",
+        type: "input",
         name: "usage",
         message: "How to use your application : ",
       },
@@ -207,12 +215,12 @@ async function main() {
         default:0
       },      
       {
-        type: "editor",
+        type: "input",
         name: "contributing",
         message: "How to contribute to your project : ",
       },
       {
-        type: "editor",
+        type: "input",
         name: "tests",
         message: "How to to run your tests in the project : ",
       },
@@ -231,10 +239,13 @@ async function main() {
     ]
   );
   
-  console.log(readMeContent);
+  let markdown = markdownGenerator(api.githubuser,readMeContent)
+  let readmePath = path.join(".","output","ReadMe.md");
+  await writeFileAsync(readmePath,markdown);
+  // console.log(readMeContent);
   
 
   // console.log(api.githubuser)
 }
 
-module.exports = { api, checkUser, getEmail, checkRepo, main };
+module.exports = { main,api,readMeContent };

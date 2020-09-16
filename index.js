@@ -1,11 +1,12 @@
-const inquirer = require("inquirer");
+// const inquirer = require("inquirer");
 const boxen = require('boxen');
 const util = require("util");
-const axios = require("axios");
+// const axios = require("axios");
 const ora = require('ora');
 const chalk = require('chalk');
 const { exitCode } = require("process");
 const api = require("./utils/api");
+
  
 
 
@@ -49,4 +50,6 @@ console.log(boxen(
 
 
 api.main();
+
+
 
