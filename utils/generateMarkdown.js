@@ -56,8 +56,8 @@ else{
 }
 
 if(content.displayPic){
-  markdown = markdown + 
-  `![Profile Picture](${user.avatar_url})
+  markdown = markdown + "<br/>" + 
+  `![Profile Picture](${user.avatar_url})<br/>
   [![GitHub followers](https://img.shields.io/github/followers/${user.login}.svg?style=social&label=Follow)](https://github.com/${user.login})`
 }
 
