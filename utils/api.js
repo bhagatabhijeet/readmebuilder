@@ -9,18 +9,18 @@ oraspinner.color = 'yellow';
 oraspinner.spinner = 'dots';
 oraspinner.indent = 5;
 
-const readme={
-  projectTitle:"",
-  description:"",
-  installation:"",
-  usage:"",
-  license:"",
-  contributing:"",
-  tests:"",
-  displayProfilePic:true,
-  displayEmail:true
+// const readme={
+//   projectTitle:"",
+//   description:"",
+//   installation:"",
+//   usage:"",
+//   license:"",
+//   contributing:"",
+//   tests:"",
+//   displayProfilePic:true,
+//   displayEmail:true
 
-};
+// };
 const api = {
   githubuser: {},
   getUser(userName) {
@@ -86,12 +86,12 @@ async function getEmail() {
     {
       type: 'input',
       message: 'Please enter the email address to display in ReadMe : ',
-      default: 'Press Enter to skip.',
+      default: '(Press Enter to skip.)',
       name: 'email'
     }
   ])
   // .then((eml) => {
-  if (eml.email === 'Press Enter to skip.') {
+  if (eml.email === '(Press Enter to skip.)') {
     eml.email = '';
   }
   else {
@@ -173,7 +173,67 @@ async function main() {
   // Get and Check if repo is valid
   await checkRepo();
 
-  console.log(api.githubuser)
+  const readMeContent = await inquirer.prompt([    
+      {
+        type: "input",
+        name: "projectTitle",
+        message: `What is the title of your project : `,
+        default:api.githubuser.repo.name
+      },
+      {
+        type: "editor",
+        name: "description",
+        message: "Provide the description for your ReadMe : ",
+      },
+      {
+        type: "editor",
+        name: "installation",
+        message: "How to install your application : ",
+      },
+      {
+        type: "editor",
+        name: "usage",
+        message: "How to use your application : ",
+      },
+      {
+        type:"list",
+        name: "license",
+        message:"Select a license : ",
+        choices:['MIT','Apache','GPL','Affero GPL',
+        'Artistic License 2.0','BSD 3-Clause License','BSD 2-Clause license',
+        'Eclipse Public License v1.0','GPL v3','LGPL v2.1','LGPL v3',
+        'Mozilla Public License Version 2.0','Public Domain (Unlicense)'],
+        default:0
+      },      
+      {
+        type: "editor",
+        name: "contributing",
+        message: "How to contribute to your project : ",
+      },
+      {
+        type: "editor",
+        name: "tests",
+        message: "How to to run your tests in the project : ",
+      },
+      {
+        type: "confirm",
+        name: "displayEmail",
+        message: "Display email in ReadMe : ",
+        default:true
+      },
+      {
+        type: "confirm",
+        name: "displayPic",
+        message: "Display profile picture in ReadMe : ",
+        default:true
+      }
+    ]
+  );
+  
+  console.log(readMeContent);
+  
+
+  // console.log(api.githubuser)
 }
 
 module.exports = { api, checkUser, getEmail, checkRepo, main };
