@@ -157,6 +157,7 @@ async function main() {
       type: "confirm",
       message: "Please make sure you've read the documentation.Ready?",
       name: 'ready',
+      default:true
     }]);
 
   // If !continue then exit
