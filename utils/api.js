@@ -10,10 +10,12 @@ oraspinner.indent=5;
 
 const api = {
   githubuser:{},
-  getUser(username) {
-    return Axios.get(`https://api.github.com/users/${username}`);
+  getUser(userName) {
+    return Axios.get(`https://api.github.com/users/${userName}`);
   },  
-  
+  getRepo(userName,repoName){
+    return Axios.get(`https://api.github.com/users/${userName}/${repoName}`);
+  } 
 
 };
 
