@@ -86,12 +86,12 @@ async function getEmail() {
     {
       type: 'input',
       message: 'Please enter the email address to display in ReadMe : ',
-      default: '(Press Enter to skip.)',
+      default: 'Press Enter to skip.',
       name: 'email'
     }
   ])
   // .then((eml) => {
-  if (eml.email === '(Press Enter to skip.)') {
+  if (eml.email === 'Press Enter to skip.') {
     eml.email = '';
   }
   else {
