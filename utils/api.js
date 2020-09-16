@@ -241,7 +241,7 @@ async function main() {
   );
   
   let markdown = markdownGenerator(api.githubuser,readMeContent)
-  let readmePath = path.join(".","output","ReadMe.md");
+  let readmePath = path.join(".","output",readMeContent.title +"ReadMe.md");
 
 
   oraspinner.start("Generating Reame...")
