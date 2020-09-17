@@ -20,8 +20,7 @@ Node.js console application to build readme based on user inputs
 - [Questions](#questions)
 
 ## Demo
-<div align="center">
-<img src="https://github.com/bhagatabhijeet/portfolio/raw/master/assets/ReadMeImages/demo.gif" alt="full browser demo gif"/>
+![Console Image](images/demo.gif)
 
 ## Description
 Readme builder is an application that helps quickly build the readme files 
