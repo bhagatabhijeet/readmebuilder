@@ -6,7 +6,7 @@ Node.js console application to build readme based on user inputs
  [![GitHub forks](https://img.shields.io/github/forks/bhagatabhijeet/readmebuilder)](https://github.com/bhagatabhijeet/readmebuilder/network)
  [![GitHub stars](https://img.shields.io/github/stars/bhagatabhijeet/readmebuilder)](https://github.com/bhagatabhijeet/readmebuilder/stargazers)
 
- ![Console Image](images/console.png)
+ ![Console Image](https://github.com/bhagatabhijeet/readmebuilder/raw/master/images/console.PNG)
  
  
  ## Table of Contents
@@ -20,7 +20,7 @@ Node.js console application to build readme based on user inputs
 - [Questions](#questions)
 
 ## Demo
-![Console Image](images/demo.gif)
+![Console Image](https://github.com/bhagatabhijeet/readmebuilder/raw/master/images/demo.gif)
 
 ## Description
 Readme builder is an application that helps quickly build the readme files 
