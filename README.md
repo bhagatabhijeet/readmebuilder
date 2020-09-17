@@ -26,10 +26,26 @@ Node.js console application to build readme based on user inputs
 Readme builder is an application that helps quickly build the readme files 
   
 ## Installation
-To install dependencies, run the following command: no installation required
+To install dependencies, run the following command: 
+<code>npm install</code>
+
+### Dependencies
+Third party libraries
+* ora
+* boxen
+* Axios
+* inquirer
 
 ## Usage
-Requirements to use this project: run node index command
+* how to run: run  the following command
+ <code>node index</node>
+* When the app asks for inputs, for some questions the app is going to open the default editor to get your input
+* default for windows in notepad and for mac/linux is vim
+* when the editor open up make sure you enter your input, save and close the editor. Unless you close your editor the app will not proceed.
+* Note unsaved file in the opened editor is as good as no input. So please **Save** and close the editor.
+* on windows if notepad is your defualt editor you can use shortcuts like <key>CTRL</key>+<key>S</key>
+* on mac/linux in order to save and quit vim use <code>:wq</code>
+
 
 ## License
 This project is licensed under the MIT license
