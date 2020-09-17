@@ -30,12 +30,11 @@ To install dependencies, run the following command:
 <code>npm install</code>
 
 ### Dependencies
-
 Third party libraries
-*** ora
-*** boxen
-*** Axios
-*** inquirer
+* ora
+* boxen
+* Axios
+* inquirer
 
 ## Usage
 * how to run: run  the following command
