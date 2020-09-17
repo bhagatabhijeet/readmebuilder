@@ -15,20 +15,11 @@ oraspinner.color = 'yellow';
 oraspinner.spinner = 'dots';
 oraspinner.indent = 5;
 
+// This variable will hold the readme contents
 let readMeContent;
 
-// const readme={
-//   projectTitle:"",
-//   description:"",
-//   installation:"",
-//   usage:"",
-//   license:"",
-//   contributing:"",
-//   tests:"",
-//   displayProfilePic:true,
-//   displayEmail:true
-
-// };
+// api calls getUser and getRepo
+// The githubuser object will hold the user profile
 const api = {
   githubuser: {},
   getUser(userName) {
@@ -37,9 +28,9 @@ const api = {
   getRepo(userName, repoName) {
     return Axios.get(`https://api.github.com/users/${userName}/repos`);
   }
-
 };
 
+// function to get username as input
 async function checkUser() {
   const getuserPrompt = await inquirer.prompt([{
     type: "input",
@@ -47,10 +38,12 @@ async function checkUser() {
     name: 'githubuser',
 
   }])
-  // console.log(getuserPrompt.githubuser);
+  
   try {
     oraspinner.start('Getting User details from github');
     const user = await api.getUser(getuserPrompt.githubuser);
+
+    // isValidUser is to check if the user is valid. 
     const validUser = await isValidUser(user);
     if (validUser) {
       console.log(chalk.green(`Thank You. The usename:${getuserPrompt.githubuser} you have entered is a valid user`));
@@ -64,15 +57,16 @@ async function checkUser() {
   }
   catch (err) {
     oraspinner.stop();
-    // console.log(err);
-    // console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
+    // console.log(err); //COMMENTED SO THAT IT CAN BE USED WHEN DEBUGGING    
     console.log(chalk.red("User Not Found!"), chalk.blue("let's try again!"));
     await checkUser();
   }
 }
 
+// Function to check if user is valid
 function isValidUser(user) {
-
+  
+  // The setTimeouts add no functionality. I am just trying go give ora spinner animation feel to the end user
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (user.login !== 'undefined') {
@@ -87,6 +81,7 @@ function isValidUser(user) {
   });
 }
 
+// Function to getemail as input from the user
 async function getEmail() {
   if (api.githubuser.email === null) {
     console.log(chalk.yellow("The user does not have public email address on his github profile."));
@@ -99,7 +94,7 @@ async function getEmail() {
       name: 'email'
     }
   ])
-  // .then((eml) => {
+  
   if (eml.email === 'Press Enter to skip.') {
     eml.email = '';
   }
@@ -108,6 +103,7 @@ async function getEmail() {
   }
 }
 
+// Function to getRepo name from user
 async function checkRepo() {
   const getRepo = await inquirer.prompt([{
     type: "input",
@@ -120,7 +116,7 @@ async function checkRepo() {
     oraspinner.start('Getting repo details from github');
     let repos = await api.getRepo(api.githubuser.login, getRepo.githubrepo);
    
-
+    // isValidRepo checks if the reponame provided by user is valid
     const validRepo = await isValidRepo(repos.data, getRepo.githubrepo);
     if (validRepo) {
       console.log(chalk.green(`Thank You. The repo:${getRepo.githubrepo} is a valid`));
@@ -133,7 +129,7 @@ async function checkRepo() {
   }
   catch (err) {
     oraspinner.stop();
-    // console.log(err);
+    
     console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
     await checkRepo();
   }
@@ -141,8 +137,11 @@ async function checkRepo() {
 
 }
 
+// Function to check if the repo is valid
 function isValidRepo(repos, repoName) {
   return new Promise((resolve, reject) => {
+
+    // The setTimeouts add no functionality. I am just trying go give ora spinner animation feel to the end user
     setTimeout(() => {      
       const filteredRepo = repos.filter(repo => repo.name.toUpperCase() == repoName.toUpperCase());
       if (filteredRepo.length === 1) {        
@@ -183,7 +182,7 @@ async function main() {
   // Get and Check if repo is valid
   await checkRepo();
   
-
+  // Get other inputs from the end user
   readMeContent = await inquirer.prompt([    
       {
         type: "input",
@@ -192,17 +191,17 @@ async function main() {
         default:api.githubuser.repo.name
       },
       {
-        type: "input",
+        type: "editor",
         name: "description",
         message: "Provide the description for your ReadMe : ",
       },
       {
-        type: "input",
+        type: "editor",
         name: "installation",
         message: "How to install your application : ",
       },
       {
-        type: "input",
+        type: "editor",
         name: "usage",
         message: "How to use your application : ",
       },
@@ -217,7 +216,7 @@ async function main() {
         default:0
       },      
       {
-        type: "input",
+        type: "editor",
         name: "contributing",
         message: "How to contribute to your project : ",
       },
