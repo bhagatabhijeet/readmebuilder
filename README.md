@@ -17,7 +17,6 @@ Node.js console application to build readme based on user inputs
 - [Usage](#usage)
 - [License](#license)
 - [Contributing](#contributing)
-- [Tests](#tests) 
 - [Questions](#questions)
 
 ## Demo
@@ -53,10 +52,6 @@ This project is licensed under the MIT license
 
 ## Contributing
 To contribute to this project issue pull requests
-
-## Tests
-To run a test use the following command: 
-<code>npm test</code>
 
 ## Questions
 
