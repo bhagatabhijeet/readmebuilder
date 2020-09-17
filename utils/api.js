@@ -157,6 +157,7 @@ function isValidRepo(repos, repoName) {
   });
 }
 
+// main funtion. This async function does all the action
 async function main() {
 
   // Check if user wants to continue
@@ -241,6 +242,9 @@ async function main() {
   );
   
   let markdown = markdownGenerator(api.githubuser,readMeContent)
+
+  // Note: - ReadMe file is prefixed with the title provided by user. This is to avoid overwriting ReadMes
+  // So that user can generate multiple readmes in the output directory
   let readmePath = path.join(".","output",readMeContent.title +"ReadMe.md");
 
 
@@ -251,6 +255,8 @@ async function main() {
       await writeFileAsync(readmePath,markdown);
       oraspinner.stop();
       console.log();
+
+      // Final box giving the path to read me
       console.log(
         boxen(`
         ${chalk.blue('Thank You! for using ReadMeBuilder.')}        

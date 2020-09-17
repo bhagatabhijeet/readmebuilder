@@ -48,7 +48,7 @@ console.log(boxen(
 }));
 
 
-
+// Call to main function. main does all the action
 api.main();
 
 
