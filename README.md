@@ -5,6 +5,7 @@ Node.js console application to build readme based on user inputs
  [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/bhagatabhijeet/readmebuilder)
  [![GitHub forks](https://img.shields.io/github/forks/bhagatabhijeet/readmebuilder)](https://github.com/bhagatabhijeet/readmebuilder/network)
  [![GitHub stars](https://img.shields.io/github/stars/bhagatabhijeet/readmebuilder)](https://github.com/bhagatabhijeet/readmebuilder/stargazers)
+ ![GitHub package.json version](https://img.shields.io/github/package-json/v/bhagatabhijeet/readmebuilder)
 
  ![Console Image](https://github.com/bhagatabhijeet/readmebuilder/raw/master/images/console.PNG)
  
@@ -38,7 +39,7 @@ Third party libraries
 
 ## Usage
 * how to run: run  the following command
- <code>node index</node>
+ <code>node index</code>
 * When the app asks for inputs, for some questions the app is going to open the default editor to get your input
 * default for windows in notepad and for mac/linux is vim
 * when the editor open up make sure you enter your input, save and close the editor. Unless you close your editor the app will not proceed.
