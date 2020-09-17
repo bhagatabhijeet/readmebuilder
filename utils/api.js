@@ -59,14 +59,15 @@ async function checkUser() {
     else {
       console.log();
       console.log(chalk.red("User Not Found!"), chalk.blue("let's try again!"));
-      checkUser();
+      await checkUser();
     }
   }
   catch (err) {
     oraspinner.stop();
-    console.log(err);
-    console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
-    checkUser();
+    // console.log(err);
+    // console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
+    console.log(chalk.red("User Not Found!"), chalk.blue("let's try again!"));
+    await checkUser();
   }
 }
 
@@ -80,7 +81,7 @@ function isValidUser(user) {
       }
       else {
         oraspinner.stop();
-        reject(false);
+        resolve(false);
       }
     }, 2000);
   });
@@ -132,7 +133,7 @@ async function checkRepo() {
   }
   catch (err) {
     oraspinner.stop();
-    console.log(err);
+    // console.log(err);
     console.log(chalk.red("Something went wrong!"), chalk.blue("let's try again!"));
     await checkRepo();
   }
